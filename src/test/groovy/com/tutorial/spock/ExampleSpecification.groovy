@@ -39,6 +39,57 @@ class ExampleSpecification extends Specification{
         new Polygon(0)
 
         then:
-        thrown(TooFewSidesException)
+        def exception = thrown(TooFewSidesException)
+        exception.getLocalizedMessage() == "sides number cannot be zero"
+        exception.sides == 0
     }
+
+    def "should throw exception with pipes(multiple negative cases)"() {
+        when:
+        new Polygon(sides)
+
+        then:
+        def exception = thrown(TooFewSidesException)
+        exception.getLocalizedMessage() == "sides number cannot be zero"
+        exception.sides == sides
+
+        where:
+        sides << [0,-1,-2] // pipes --> groovy uses each of these values and pass it to the test and iterate over each scenario
+        // here left shift operation (operator overloading) used to show that pipeline of values are used to test the case.
+    }
+
+    def "should be able to create polygon with specific sides "(){
+        when:
+        def polygon = new Polygon(sides)
+
+        then:
+        polygon.numberOfSides == sides
+
+        where:
+        sides << [3,-2,5]
+    }
+
+    def "should be able to create polygon with specific sides --- better version "(){
+        expect:
+        new Polygon(sides).numberOfSides == sides
+
+        where:
+        sides << [3,2,5]
+    }
+
+    def "data tables test max of #a and #b is #max" () {
+        expect:
+        Math.max(a,b) == max
+
+        where:  // here we used data tables.
+        a | b | max
+        23| 34 | 34
+        33| 45 | 45
+    }
+
+    def "should be able to mock concrete class"() {
+        
+    }
+
+
 }

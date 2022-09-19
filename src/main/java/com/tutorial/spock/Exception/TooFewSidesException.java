@@ -1,7 +1,14 @@
 package com.tutorial.spock.Exception;
 
 public class TooFewSidesException extends  RuntimeException{
-    public TooFewSidesException(String message){
-        super(message);
+
+    private final int sides;
+    public TooFewSidesException(String message, int sides){
+        super(message+ (sides));
+        this.sides = sides;
+    }
+
+    public int getSides() {
+        return sides;
     }
 }

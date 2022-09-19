@@ -7,7 +7,7 @@ public class Polygon {
 
     public  Polygon(int numberOfSides){
         if(numberOfSides <=0){
-            throw  new TooFewSidesException("sides number cannot be zero");
+            throw  new TooFewSidesException("sides number cannot be ", numberOfSides);
         }
         this.numberOfSides = numberOfSides;
     }
