@@ -2,6 +2,8 @@ package com.tutorial.spock
 
 import com.tutorial.spock.Exception.TooFewSidesException
 import spock.lang.Specification
+import spock.lang.Subject
+
 
 class ExampleSpecification extends Specification{
 
@@ -87,8 +89,52 @@ class ExampleSpecification extends Specification{
         33| 45 | 45
     }
 
-    def "should be able to mock concrete class"() {
-        
+    def "should be able to MOCK concrete class"() {
+        given:
+        Renderer renderer = Mock() // code to create a mock
+        @Subject // says which method is being tested
+        def polygon  = new Polygon(4, renderer)
+
+        when:
+        polygon.draw() //what will happen if we call the draw method
+
+        then:
+        4 * renderer.drawLine()
+    }
+
+    def "Should test with stub"() {
+        given:
+        //useful to provide data into the coder we are testing
+        Palette palette = Stub()  // we can use Mock also in the case of stub() but no otherwise
+        palette.getPrimaryColor() >> Color.RED // we use right shift to state that, when the method getPrimaryColor is called, return color as red.
+        @Subject
+        def renderer = new Renderer(palette)
+
+        expect:
+        renderer.getForegroundColor() == Color.RED // getForegroundColor inherently calls palette.getPrimaryColor
+
+
+    }
+
+    def "test with helper methods" (){
+        given:
+        Renderer renderer = Mock()
+        def shapeFactory = new ShapeFactory(renderer)
+
+        when:
+        @Subject
+        def polygon = shapeFactory.createDefaultPolygon();
+
+        //if we have multiple checks / assertion to validate, move the checks in to a private helper class.
+
+        then:
+        checkDefaultShape(polygon, renderer)
+
+    }
+
+    private void checkDefaultShape(Polygon polygon, Renderer renderer){
+        assert polygon.numberOfSides == 4
+        assert polygon.renderer == null
     }
 
 
