@@ -1,6 +1,16 @@
 plugins {
     id 'groovy'
 }
+repositories {
+    mavenCentral()
+    google()
+    maven {
+        url "https://repository.jboss.org/maven2"
+    }
+    maven {
+        url "https://repo.spring.io/release"
+    }
+}
 
 group 'org.example'
 version '1.0-SNAPSHOT'
@@ -12,8 +22,12 @@ repositories {
 dependencies {
     testImplementation 'org.spockframework:spock-core:2.2-groovy-3.0'
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.13'
+
+    implementation 'net.bytebuddy:byte-buddy-gradle-plugin:1.12.16'
+
 }
 
 test {
     useJUnitPlatform()
+
 }

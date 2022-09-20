@@ -134,7 +134,42 @@ class ExampleSpecification extends Specification{
 
     private void checkDefaultShape(Polygon polygon, Renderer renderer){
         assert polygon.numberOfSides == 4
-        assert polygon.renderer == null
+        assert polygon.renderer == renderer
+    }
+
+
+    def "test with helper 'with' method" (){
+        given:
+        Renderer renderer = Mock()
+        def shapeFactory = new ShapeFactory(renderer)
+
+        when:
+        @Subject
+        def polygon = shapeFactory.createDefaultPolygon();
+
+        then:  // 'with' also will stop executing the subsequent assertions when one of them failed.
+        with(polygon){
+            numberOfSides == 4
+            renderer == renderer
+        }
+
+    }
+
+    def "test with helper 'verifyAll' method to check all the assertions regardless one failure" (){
+        given:
+        Renderer renderer = Mock()
+        def shapeFactory = new ShapeFactory(renderer)
+
+        when:
+        @Subject
+        def polygon = shapeFactory.createDefaultPolygon();
+
+        then:  // 'with' also will stop executing the subsequent assertions when one of them failed.
+        verifyAll(polygon){
+            numberOfSides == 4
+            renderer == renderer
+        }
+
     }
 
 

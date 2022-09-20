@@ -11,6 +11,6 @@ public class ShapeFactory {
         this.renderer = renderer;
     }
     Polygon createDefaultPolygon(){
-        return new Polygon(4);
+        return new Polygon(4, renderer);
     }
 }
